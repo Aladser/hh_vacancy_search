@@ -18,4 +18,3 @@ class BasicApi(ABC):
     @abstractmethod
     def set_param(self, key: str, value: str = None) -> None:
         pass
-

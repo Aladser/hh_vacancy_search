@@ -1,4 +1,5 @@
 import requests
+from src.api.basic_api import BasicApi
 from src.parser import Parser
 
 """
@@ -26,7 +27,7 @@ from src.parser import Parser
 """
 
 
-class HHApi(Parser):
+class HHApi(BasicApi, Parser):
     """
     Класс для работы с API HeadHunter
     :param page_count: число страниц запроса
