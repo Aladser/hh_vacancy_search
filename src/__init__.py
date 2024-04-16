@@ -1,5 +1,4 @@
-from src import parser, hh, vacancy
+from src import parser, vacancy
 
 Parser = parser.Parser
 Vacancy = vacancy.Vacancy
-HH = hh.HH
