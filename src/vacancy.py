@@ -1,5 +1,4 @@
-from classes.vacancy.job_requrements import JobRequirements
-from classes.log_mixin import LogMixin
+from src.log_mixin import LogMixin
 
 
 class Vacancy(LogMixin):
@@ -16,9 +15,9 @@ class Vacancy(LogMixin):
     __url: str
     __description: str
     __salary: int
-    __requirements: JobRequirements
+    __requirements: str
 
-    def __init__(self, name: str, url: str, description: str, salary: int, requirements: JobRequirements = None):
+    def __init__(self, name: str, url: str, description: str, salary: int, requirements: str):
         self.__name = name
         self.__url = url
         self.__description = description
