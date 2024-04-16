@@ -29,25 +29,35 @@ from src.parser import Parser
 class HH(Parser):
     """
     Класс для работы с API HeadHunter
+    :param page_count: число страниц запроса
+    :param per_page: количество элементов страницы
     """
     __url = 'https://api.hh.ru/vacancies'
     __headers = {'User-Agent': 'HH-User-Agent'}
-    possible_param_list = [
+
+    possible_params_list = [
         'text', 'page', 'per_page', 'search_field', 'employment', 'schedule', 'area', 'professional_role', 'salary',
         'only_with_salary', 'period', 'date_from', 'order_by'
     ]
     __wrong_key_exception_msg_end = ' - недопустимый ключ'
 
-    def __init__(self, file_worker: str):
-        self.__params = {'text': '', 'page': 0, 'per_page': 10}
+    __page_count: int
+    __per_page: int
+    __params: dict
+    __vacancies: list
+
+    def __init__(self, page_count=3, per_page=10):
+        self.__page_count = page_count
+        self.__per_page = per_page
+        self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page}
         self.__vacancies = []
 
     @property
-    def vacancies(self):
+    def vacancies(self) -> list:
         return self.__vacancies
 
     @property
-    def params(self):
+    def params(self) -> str:
         return ', '.join([f"{key}:{value}" for key, value in self.__params.items()])
 
     def get_param(self, key):
@@ -55,14 +65,14 @@ class HH(Parser):
             raise ValueError(f"{key}{self.__wrong_key_exception_msg_end}")
         return self.__params[key]
 
-    def set_param(self, key: str, value: str = None):
+    def set_param(self, key: str, value: str = None) -> None:
         if key not in self.__params:
             raise ValueError(f"{key}{self.__wrong_key_exception_msg_end}")
         self.__params[key] = value
 
-    def load_vacancies(self, keyword):
+    def load_vacancies(self, keyword) -> None:
         self.__params['text'] = keyword
-        while self.__params.get('page') != 3:
+        while self.__params.get('page') != self.__page_count:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
             vacancies = response.json()['items']
             self.__vacancies.extend(vacancies)

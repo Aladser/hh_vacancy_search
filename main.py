@@ -3,4 +3,5 @@ from src import HH
 VACANCIES_FILEPATH = 'data/vacancies.json'
 
 hh_api = HH(VACANCIES_FILEPATH)
-print(hh_api.params)
+hh_api.load_vacancies('java')
+print(len(hh_api.vacancies))
