@@ -1,5 +1,5 @@
-from src import hh, parser, vacancy
+from src import hh_api, parser, vacancy
 
-HH = hh.HH
+HHApi = hh_api.HHApi
 Parser = parser.Parser
 Vacancy = vacancy.Vacancy

@@ -26,7 +26,7 @@ from src.parser import Parser
 """
 
 
-class HH(Parser):
+class HHApi(Parser):
     """
     Класс для работы с API HeadHunter
     :param page_count: число страниц запроса

@@ -1,5 +1,5 @@
 import pytest
-from src import HH
+from src import HHApi
 
 
 @pytest.fixture()
@@ -8,7 +8,7 @@ def vacancies_json_path():
 
 
 def test_work(vacancies_json_path):
-    hh_api = HH(vacancies_json_path)
+    hh_api = HHApi(vacancies_json_path)
 
     assert hh_api.params == 'text:, page:0, per_page:10'
     hh_api.set_param('text', 'java')
