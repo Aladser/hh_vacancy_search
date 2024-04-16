@@ -1,5 +1,5 @@
 import json
-import os.path
+from src.vacancy import Vacancy
 
 
 class Parser:
@@ -11,14 +11,13 @@ class Parser:
     def parse(self):
         with open(self.__file_worker) as file:
             resp_data = json.load(file)
-        resp_vacancies = resp_data['items']
 
-        for key in resp_vacancies:
-            print(key)
-
-if __name__ == '__main__':
-    REL_VACANCIES_FILEPATH = '../data/request_vacancies.json'
-    ABS_VACANCIES_FILEPATH = os.path.abspath(REL_VACANCIES_FILEPATH)
-
-    parser = Parser(ABS_VACANCIES_FILEPATH)
-    parser.parse()
+        resp_vacancies = []
+        for i in range(len(resp_data)):
+            vacancy = resp_data['items'][i]
+            url = vacancy['alternate_url'] if vacancy['alternate_url'] else 'не указана'
+            area = vacancy['area']['name'] if vacancy['area']['name'] else 'не указано'
+            salary_from = f"от {vacancy['salary']['from']} {vacancy['salary']['currency']}" if vacancy['salary'] else 'не указана'
+            requirement = vacancy['snippet']['requirement'] if vacancy['snippet']['requirement'] else ''
+            resp_vacancies.append(Vacancy(vacancy['name'], url, area, salary_from, requirement))
+        return resp_vacancies
