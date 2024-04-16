@@ -1,15 +1,15 @@
 import requests
+from src import Parser
 
 
 class HH(Parser):
     """
     Класс для работы с API HeadHunter
-    Класс Parser является родительским классом, который вам необходимо реализовать
     """
+    url = 'https://api.hh.ru/vacancies'
+    headers = {'User-Agent': 'HH-User-Agent'}
 
     def __init__(self, file_worker):
-        self.url = 'https://api.hh.ru/vacancies'
-        self.headers = {'User-Agent': 'HH-User-Agent'}
         self.params = {'text': '', 'page': 0, 'per_page': 100}
         self.vacancies = []
         super().__init__(file_worker)
