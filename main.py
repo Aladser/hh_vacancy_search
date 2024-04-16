@@ -1,9 +1,10 @@
 import os
+
 from src import Parser
+from src.api import HHApi
 
-REL_VACANCIES_FILEPATH = 'data/request_vacancies.json'
-ABS_VACANCIES_FILEPATH = os.path.abspath(REL_VACANCIES_FILEPATH)
+VACANCIES_FILEPATH = os.path.abspath('data/request_vacancies.json')
+hh_api = HHApi(VACANCIES_FILEPATH)
 
-parser = Parser(ABS_VACANCIES_FILEPATH)
-vacancies = parser.parse()
-[print(f"{el}\n") for el in vacancies]
+vacancies = hh_api.load_vacancies('Java')
+print(len(vacancies))

@@ -48,7 +48,7 @@ class HHApi(BasicApi, Parser):
     __params: dict
     __vacancies: list
 
-    def __init__(self, file_worker, page_count=3, per_page=10):
+    def __init__(self, file_worker, page_count=1, per_page=10):
         self.__page_count = page_count
         self.__per_page = per_page
         self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page}
@@ -73,10 +73,12 @@ class HHApi(BasicApi, Parser):
             raise ValueError(f"{key}{self.__wrong_key_exception_msg_end}")
         self.__params[key] = value
 
-    def load_vacancies(self, keyword) -> None:
+    def load_vacancies(self, keyword) -> list:
+        vacancies_obj = []
         self.__params['text'] = keyword
         while self.__params.get('page') != self.__page_count:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
             vacancies = response.json()['items']
-            self.__vacancies.extend(vacancies)
+            vacancies_obj.extend(vacancies)
             self.__params['page'] += 1
+        return self.parse_obj(vacancies_obj)
