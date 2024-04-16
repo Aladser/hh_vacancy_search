@@ -3,6 +3,7 @@ from src.api.basic_api import BasicApi
 from src.parser import Parser
 
 """
+    ключи JSON-файла
     page - номер страницы
     per_page- количество элементов
     text - Переданное значение ищется в полях вакансии, указанных в параметре search_field
@@ -47,11 +48,12 @@ class HHApi(BasicApi, Parser):
     __params: dict
     __vacancies: list
 
-    def __init__(self, page_count=3, per_page=10):
+    def __init__(self, file_worker, page_count=3, per_page=10):
         self.__page_count = page_count
         self.__per_page = per_page
         self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page}
         self.__vacancies = []
+        super().__init__(file_worker)
 
     @property
     def vacancies(self) -> list:
