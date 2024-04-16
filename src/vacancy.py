@@ -46,7 +46,7 @@ class Vacancy(LogMixin):
         return self.__salary_from.split(' ')[1] if self.__salary_from != 'не указана' else False
 
     @staticmethod
-    def is_more_salary(vacancy_1, vacancy_2):
+    def is_better_salary(vacancy_1, vacancy_2):
         if vacancy_1.salary_currency != vacancy_2.salary_currency:
             raise ValueError('зарплаты вакансий в разных валютах')
         else:

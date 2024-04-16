@@ -46,5 +46,5 @@ def test_work(vcn_params):
     vcn_params['name'] = 'программист 2'
     vcn_params['salary_from'] = '2000 руб'
     vacancy_2 = Vacancy(**vcn_params)
-    most_vacancy = Vacancy.is_more_salary(vacancy_1, vacancy_2)
-    assert most_vacancy.name == 'программист 2'
+    better_vacancy = Vacancy.is_better_salary(vacancy_1, vacancy_2)
+    assert better_vacancy.name == 'программист 2'
