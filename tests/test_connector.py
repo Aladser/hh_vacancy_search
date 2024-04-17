@@ -24,5 +24,5 @@ def test_work(connector, filepath):
     }
     vacancy = Vacancy(**vcn_params)
     parser = Parser(filepath)
-    connector.add_vacancy(vacancy)
-    [print(el) for el in parser.parse_json()]
+    #connector.add_vacancy(vacancy)
+    print(connector.vacancy_count())

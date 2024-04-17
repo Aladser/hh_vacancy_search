@@ -40,3 +40,8 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
     def delete_vacancy(self, vacancy: Vacancy) -> None:
         pass
+
+    def vacancy_count(self):
+        vacanices_obj_list = self.__parser.parse_json()
+        return len(vacanices_obj_list)
+
