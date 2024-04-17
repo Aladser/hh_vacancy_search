@@ -100,8 +100,6 @@ class JSONVacancyConnector(BasicVacancyConnector):
         found_vacancies_obj_list = []
         if params:
             for vcn in vacancies_obj_list:
-                [print(f"{key}:{value}") for key,value in vcn.items()]
-                print()
                 # флаг совпадения
                 is_matching = True
                 for par_key, par_value in params.items():
