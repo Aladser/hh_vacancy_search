@@ -13,15 +13,19 @@ def connector(filepath):
     return JSONVacancyConnector(filepath)
 
 
-def test_work(connector, filepath):
+def test_work(connector):
     print()
     vcn_params = {
+        'vcn_id': 1,
         'name': 'программист',
         'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
         'area': 'Благовещенск',
-        'salary_from': '1000 RUR'
+        'salary_from': '1000 руб'
     }
     vacancy = Vacancy(**vcn_params)
-    #connector.add_vacancy(vacancy)
-    parser = Parser(filepath)
-    [print(el) for el in parser.parse_json()]
+
+    initial_count = connector.vacancy_count
+    connector.add_vacancy(vacancy)
+    assert connector.vacancy_count == initial_count + 1
+    connector.delete_vacancy(1)
+    assert connector.vacancy_count == initial_count

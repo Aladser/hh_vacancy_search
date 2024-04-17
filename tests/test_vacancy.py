@@ -5,6 +5,7 @@ from src import Vacancy
 @pytest.fixture
 def vcn_params():
     return {
+        'vcn_id': 1,
         'name': 'программист',
         'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
         'area': 'Благовещенск',

@@ -11,21 +11,27 @@ class Vacancy(LogMixin):
     :param requirements: требования
     """
 
+    __vcn_id: int
     __name: str
     __url: str
     __area: str
     __salary_from: str
     __requirements: str
 
-    def __init__(self, name: str, url: str, area: str, salary_from: str, requirements: str = ''):
+    def __init__(self, vcn_id: int, name: str, url: str, area: str, salary_from: str, requirements: str = ''):
         if name == '' or name is None:
             raise ValueError('не указано название вакансии')
 
+        self.__vcn_id = vcn_id
         self.__name = name
         self.__url = url if url else ''
         self.__area = area if area else 'не указано'
         self.__requirements = requirements if requirements else ''
         self.__salary_from = salary_from if salary_from else 'не указана'
+
+    @property
+    def vcn_id(self):
+        return self.__vcn_id
 
     @property
     def name(self):
@@ -65,6 +71,7 @@ class Vacancy(LogMixin):
 
     def __str__(self):
         return (f""
+          f"id:{self.__vcn_id}\n"
           f"Название: {self.__name}\n"
           f"Ссылка:{self.__url}\n"
           f"Место работы: {self.__area}\n"
