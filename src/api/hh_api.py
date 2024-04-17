@@ -27,7 +27,7 @@ class HHApi(BasicApi, Parser):
     def __init__(self, file_worker, page_count=1, per_page=10):
         self.__page_count = page_count
         self.__per_page = per_page
-        self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page}
+        self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page, 'order_by': 'salary_desc'}
         self.__vacancies = []
         super().__init__(file_worker)
 
@@ -59,7 +59,9 @@ class HHApi(BasicApi, Parser):
             vacancies = response.json()['items']
             vacancies_obj.extend(vacancies)
             self.__params['page'] += 1
-        return self.parse_obj_to_vacancy_cls_copy(vacancies_obj)
+            print()
+        self.__vacancies = self.parse_obj_to_vacancy_cls_copy(vacancies_obj)
+        return self.__vacancies
 
 
 """
