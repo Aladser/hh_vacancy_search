@@ -22,6 +22,6 @@ def test_work(connector, filepath):
         'salary_from': '1000 RUR'
     }
     vacancy = Vacancy(**vcn_params)
-    parser = Parser(filepath)
-    print(parser.parse_json())
     #connector.add_vacancy(vacancy)
+    parser = Parser(filepath)
+    [print(el) for el in parser.parse_json()]

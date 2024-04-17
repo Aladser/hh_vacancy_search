@@ -14,7 +14,6 @@ class Vacancy(LogMixin):
     __name: str
     __url: str
     __area: str
-    __salary_from_value: float
     __salary_from: str
     __requirements: str
 
@@ -31,6 +30,18 @@ class Vacancy(LogMixin):
     @property
     def name(self):
         return self.__name
+
+    @property
+    def url(self):
+        return self.__url
+
+    @property
+    def area(self):
+        return self.__area
+
+    @property
+    def requirements(self):
+        return self.__requirements
 
     @property
     def salary(self):
