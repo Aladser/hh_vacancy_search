@@ -6,8 +6,9 @@ from src import Parser
 class HHApi(BasicApi, Parser):
     """
     Класс для работы с API HeadHunter
-    :param page_count: число страниц запроса
-    :param per_page: количество элементов страницы
+        :param file_worker: рабочий JSON-файл
+        :param page_count: число страниц
+        :param per_page: число вакансий на странице
     """
 
     __url = 'https://api.hh.ru/vacancies'

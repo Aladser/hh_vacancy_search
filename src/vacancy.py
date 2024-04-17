@@ -52,8 +52,8 @@ class Vacancy(LogMixin):
         self.__requirement = requirement if requirement else ''
 
     @property
-    def vcn_id(self):
-        return self.__vcn_id
+    def id(self) -> int:
+        return int(self.__vcn_id)
 
     @property
     def name(self):
@@ -68,7 +68,7 @@ class Vacancy(LogMixin):
         return self.__area
 
     @property
-    def requirements(self):
+    def requirement(self):
         return self.__requirement
 
     @property
@@ -77,10 +77,11 @@ class Vacancy(LogMixin):
 
     @property
     def salary_numeric_value_from(self) -> float:
-        return float(self.__salary_from)
+        return float(self.__salary_from) if self.__salary_from and self.__salary_from != '' else ''
 
+    @property
     def salary_numeric_value_to(self) -> float:
-        return float(self.__salary_to)
+        return float(self.__salary_to) if self.__salary_from and self.__salary_to != '' else ''
 
     @property
     def salary(self) -> str:
@@ -94,11 +95,21 @@ class Vacancy(LogMixin):
             return 'не указана'
 
     @staticmethod
-    def is_better_salary(vacancy_1, vacancy_2) -> 'Vacancy':
+    def is_better_salary(vacancy_1, vacancy_2) -> str:
         if vacancy_1.salary_currency != vacancy_2.salary_currency:
             raise ValueError('зарплаты вакансий в разных валютах')
+        elif vacancy_1.salary_numeric_value_from and vacancy_2.salary_numeric_value_from:
+            if float(vacancy_1.salary_numeric_value_from) > float(vacancy_2.salary_numeric_value_from):
+                return f"{vacancy_1.id} {vacancy_1.name}"
+            else:
+                return f"{vacancy_2.id} {vacancy_2.name}"
+        elif vacancy_1.salary_numeric_value_to and vacancy_2.salary_numeric_value_to:
+            if vacancy_1.salary_numeric_value_to > vacancy_2.salary_numeric_value_to:
+                return f"{vacancy_1.id} {vacancy_1.name}"
+            else:
+                return f"{vacancy_2.id} {vacancy_2.name}"
         else:
-            return vacancy_1 if vacancy_1.salary_numeric_value > vacancy_2.salary_numeric_value else vacancy_2
+            raise ValueError('Нет данных для корректного сравнения зарплат')
 
     def __str__(self):
         return (f""
