@@ -1,4 +1,5 @@
 import json
+import re
 from src.vacancy import Vacancy
 
 
@@ -24,18 +25,26 @@ class Parser:
         return resp_data
 
     @staticmethod
-    def parse_obj_to_vacancy_cls_copy(vacancies_obj: list) -> list:
+    def parse_obj_to_vacancy_cls_copy(vacancy_dict_list: list) -> list:
         """парсинг профессий из объекта"""
         vacancies = []
-        for i in range(len(vacancies_obj)):
-            vacancy = vacancies_obj[i]
-            url = vacancy['alternate_url'] if vacancy['alternate_url'] else None
-            area = vacancy['area']['name'] if vacancy['area']['name'] else None
-            requirement = vacancy['snippet']['requirement'] if vacancy['snippet']['requirement'] else None
-            if vacancy['salary']:
-                salary_from = f"{vacancy['salary']['from']} {vacancy['salary']['currency']}"
+        for i in range(len(vacancy_dict_list)):
+            vacancy = vacancy_dict_list[i]
+            job_params = {
+                'vcn_id': vacancy['id'],
+                'name': vacancy['name'],
+                'url': vacancy['alternate_url'] if vacancy['alternate_url'] else None,
+                'area': vacancy['area']['name'] if vacancy['area'] else None,
+                'requirement': re.sub(r'\<[^>]*\>', '', vacancy['snippet']['requirement']) if vacancy['snippet']['requirement'] else None,
+            }
+            if vacancy['salary'] and vacancy['salary'] != '':
+                job_params['salary_from'] = vacancy['salary']['from'] if vacancy['salary']['from'] else ''
+                job_params['salary_to'] = vacancy['salary']['to'] if vacancy['salary']['to'] else ''
+                job_params['salary_currency'] = vacancy['salary']['currency']
             else:
-                salary_from = None
-            vacancies.append(Vacancy(vacancy['id'], vacancy['name'], url, area, salary_from, requirement))
+                job_params['salary_from'] = None
+                job_params['salary_to'] = None
+                job_params['salary_currency'] = None
+            vacancies.append(Vacancy(**job_params))
 
         return vacancies
