@@ -1,6 +1,6 @@
 import pytest
 from src.connector import JSONVacancyConnector
-from src import Vacancy, Parser
+from src import Vacancy
 
 
 @pytest.fixture
@@ -9,36 +9,46 @@ def working_file_path():
 
 
 @pytest.fixture
-def test_file_path():
-    return '../data/test_vacancies.json'
+def vacancy():
+    vcn_params = {
+        'vcn_id': 100,
+        'name': 'программист',
+        'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
+        'area': 'Архара',
+        'salary_from': '10000 руб'
+    }
+    return Vacancy(**vcn_params)
 
 
-def test_work(working_file_path):
-    print()
+def test_work(working_file_path, vacancy):
     connector = JSONVacancyConnector(working_file_path)
-    parser = Parser(working_file_path)
     name_list = ['пилот', 'пилот', 'пилот', 'инженер', 'швея']
     area_list = ['Зея', 'Зея', 'Тында', 'Москва', 'Тверь']
     salary_from = ['1000 RUR', '2000 RUR', '3000 RUR', '3000 RUR', '3000 RUR']
 
-    if connector.vacancy_count < 5:
-        for i in range(5):
-            vcn_params = {
-                'vcn_id': i + 1,
-                'name': name_list[i],
-                'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
-                'area': area_list[i],
-                'salary_from': salary_from[i]
-            }
-            vacancy = Vacancy(**vcn_params)
-            connector.add_vacancy(vacancy)
-        assert connector.vacancy_count == 5
+    # пеорезаписываю json-файл тестовыми данными
+    for i in range(connector.vacancy_count):
+        connector.delete_vacancy()
+    for i in range(5):
+        vcn_params = {
+            'vcn_id': i + 1,
+            'name': name_list[i],
+            'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
+            'area': area_list[i],
+            'salary_from': salary_from[i]
+        }
+        connector.add_vacancy(Vacancy(**vcn_params))
+    assert connector.vacancy_count == 5
 
-    vcn_list = connector.get_vacancies()
-    assert len(vcn_list) == 5
-    vcn_list = connector.get_vacancies({'name':'пилот'})
-    assert len(vcn_list) == 3
-    vcn_list = connector.get_vacancies({'name':'пилот', 'area':'Зея'})
-    assert len(vcn_list) == 2
-    vcn_list = connector.get_vacancies({'name': 'пилот', 'area': 'Зея', 'salary_from': '1000 RUR'})
-    print(vcn_list)
+    assert len(connector.get_vacancies()) == 5
+    assert len(connector.get_vacancies({'name':'пилот'})) == 3
+    assert len(connector.get_vacancies({'name':'пилот', 'area':'Зея'})) == 2
+    assert len(connector.get_vacancies({'name': 'пилот', 'area': 'Зея', 'salary_from': '1000 RUR'})) == 1
+    assert len(connector.get_vacancies({'name1': 'пилот'})) == 0
+    job_count = connector.vacancy_count
+    connector.add_vacancy(vacancy)
+    assert len(connector.get_vacancies()) == job_count + 1
+    connector.delete_vacancy(100)
+    assert len(connector.get_vacancies()) == job_count
+    connector.delete_vacancy()
+    assert len(connector.get_vacancies()) == job_count -1

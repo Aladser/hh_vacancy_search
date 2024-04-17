@@ -33,7 +33,7 @@ class Parser:
             area = vacancy['area']['name'] if vacancy['area']['name'] else None
             requirement = vacancy['snippet']['requirement'] if vacancy['snippet']['requirement'] else None
             if vacancy['salary']:
-                salary_from = f"от {vacancy['salary']['from']} {vacancy['salary']['currency']}"
+                salary_from = f"{vacancy['salary']['from']} {vacancy['salary']['currency']}"
             else:
                 salary_from = None
             vacancies.append(Vacancy(vacancy['id'], vacancy['name'], url, area, salary_from, requirement))
