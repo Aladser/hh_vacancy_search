@@ -33,8 +33,7 @@ class HHApi(BasicApi, Parser):
             'page': 0,
             'per_page': self.__per_page,
             'order_by': 'salary_desc',
-            'host':'hh.ru',
-            'locale':'RU'
+            'area': 113
         }
         self.__vacancies = []
         super().__init__(file_worker)
