@@ -38,8 +38,8 @@ class Parser:
                 'requirement': re.sub(r'\<[^>]*\>', '', vacancy['snippet']['requirement']) if vacancy['snippet']['requirement'] else None,
             }
             if vacancy['salary'] and vacancy['salary'] != '':
-                job_params['salary_from'] = vacancy['salary']['from']
-                job_params['salary_to'] = vacancy['salary']['to']
+                job_params['salary_from'] = vacancy['salary']['from'] if vacancy['salary']['from'] else ''
+                job_params['salary_to'] = vacancy['salary']['to'] if vacancy['salary']['to'] else ''
                 job_params['salary_currency'] = vacancy['salary']['currency']
             else:
                 job_params['salary_from'] = None

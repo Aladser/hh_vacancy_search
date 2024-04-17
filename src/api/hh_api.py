@@ -28,7 +28,14 @@ class HHApi(BasicApi, Parser):
     def __init__(self, file_worker, page_count=1, per_page=10):
         self.__page_count = page_count
         self.__per_page = per_page
-        self.__params = {'text': '', 'page': 0, 'per_page': self.__per_page, 'order_by': 'salary_desc'}
+        self.__params = {
+            'text': '',
+            'page': 0,
+            'per_page': self.__per_page,
+            'order_by': 'salary_desc',
+            'host':'hh.ru',
+            'locale':'RU'
+        }
         self.__vacancies = []
         super().__init__(file_worker)
 

@@ -20,8 +20,8 @@ class Vacancy(LogMixin):
     __url: str
     __area: str
     __requirement: str
-    __salary_from: str
-    __salary_to: str
+    __salary_from: float
+    __salary_to: float
     __salary_currency: str
 
     def __init__(
@@ -40,12 +40,12 @@ class Vacancy(LogMixin):
         # проверка зарплаты
         if salary_currency or salary_currency != '':
             self.__salary_currency = salary_currency
-            self.__salary_from = salary_from if salary_from else ''
-            self.__salary_to = salary_to if salary_to else ''
+            self.__salary_from = salary_from if salary_from else None
+            self.__salary_to = salary_to if salary_to else None
         else:
             self.__salary_currency = ''
-            self.__salary_from = ''
-            self.__salary_to = ''
+            self.__salary_from = None
+            self.__salary_to = None
 
         self.__url = url if url else 'не указана'
         self.__area = area if area else 'не указано'
@@ -77,19 +77,19 @@ class Vacancy(LogMixin):
 
     @property
     def salary_numeric_value_from(self) -> float:
-        return float(self.__salary_from) if self.__salary_from and self.__salary_from != '' else ''
+        return float(self.__salary_from) if self.__salary_from and self.__salary_from else None
 
     @property
     def salary_numeric_value_to(self) -> float:
-        return float(self.__salary_to) if self.__salary_from and self.__salary_to != '' else ''
+        return float(self.__salary_to) if self.__salary_from and self.__salary_to else None
 
     @property
     def salary(self) -> str:
-        if self.__salary_from != '' and self.__salary_to != '':
+        if self.__salary_from and self.__salary_to:
             return f"от {self.__salary_from} до {self.__salary_to} {self.__salary_currency}"
-        elif self.__salary_from != '':
+        elif self.__salary_from:
             return f"от {self.__salary_from} {self.__salary_currency}"
-        elif self.__salary_to != '':
+        elif self.__salary_to:
             return f"до {self.__salary_to} {self.__salary_currency}"
         else:
             return 'не указана'

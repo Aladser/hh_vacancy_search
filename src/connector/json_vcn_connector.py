@@ -33,13 +33,14 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
         # новая вакансия как объект списка объектов вакансий JSON файла
         new_vacancy_json_obj = {
-            'id': new_vacancy.vcn_id,
+            'id': new_vacancy.id,
             'name': new_vacancy.name,
             'alternate_url': new_vacancy.url,
             'area': {'name': new_vacancy.area},
-            'snippet': {'requirement': new_vacancy.requirements},
+            'snippet': {'requirement': new_vacancy.requirement},
             'salary': {
-                'from': new_vacancy.salary_numeric_value,
+                'from': new_vacancy.salary_numeric_value_from,
+                'to': new_vacancy.salary_numeric_value_to,
                 'currency': new_vacancy.salary_currency
             }
         }
@@ -90,8 +91,6 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
         # получение списка объектов вакансий из JSON-файла
         vacancies_obj_list = self.__parser.parse_json()
-        [print(el) for el in vacancies_obj_list]
-        print()
         vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(vacancies_obj_list)
 
         # получение списка объектов вакансий, полученных из списка вакансий класса Vacancy
@@ -101,6 +100,8 @@ class JSONVacancyConnector(BasicVacancyConnector):
         found_vacancies_obj_list = []
         if params:
             for vcn in vacancies_obj_list:
+                [print(f"{key}:{value}") for key,value in vcn.items()]
+                print()
                 # флаг совпадения
                 is_matching = True
                 for par_key, par_value in params.items():

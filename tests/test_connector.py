@@ -15,16 +15,19 @@ def vacancy():
         'name': 'программист',
         'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
         'area': 'Архара',
-        'salary_from': '10000 руб'
+        'salary_from': '10000',
+        'salary_to': '20000',
+        'salary_currency': 'руб'
     }
     return Vacancy(**vcn_params)
 
 
 def test_work(working_file_path, vacancy):
+    print()
     connector = JSONVacancyConnector(working_file_path)
     name_list = ['пилот', 'пилот', 'пилот', 'инженер', 'швея']
     area_list = ['Зея', 'Зея', 'Тында', 'Москва', 'Тверь']
-    salary_from = ['1000 RUR', '2000 RUR', '3000 RUR', '3000 RUR', '3000 RUR']
+    salary_from = [1000, 2000, 3000, 3000, 3000]
 
     # пеорезаписываю json-файл тестовыми данными
     for i in range(connector.vacancy_count):
@@ -35,15 +38,16 @@ def test_work(working_file_path, vacancy):
             'name': name_list[i],
             'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
             'area': area_list[i],
-            'salary_from': salary_from[i]
+            'salary_from': salary_from[i],
+            'salary_to': '10000',
+            'salary_currency': 'руб'
         }
         connector.add_vacancy(Vacancy(**vcn_params))
-    assert connector.vacancy_count == 5
 
     assert len(connector.get_vacancies()) == 5
     assert len(connector.get_vacancies({'name':'пилот'})) == 3
     assert len(connector.get_vacancies({'name':'пилот', 'area':'Зея'})) == 2
-    assert len(connector.get_vacancies({'name': 'пилот', 'area': 'Зея', 'salary_from': '1000 RUR'})) == 1
+    assert len(connector.get_vacancies({'name': 'пилот', 'area': 'Зея', 'salary_from': 1000})) == 1
     assert len(connector.get_vacancies({'name1': 'пилот'})) == 0
     job_count = connector.vacancy_count
     connector.add_vacancy(vacancy)
