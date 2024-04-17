@@ -11,8 +11,17 @@ class Parser:
     def parse_json(self) -> list:
         """парсинг профессий из JSON-файла"""
         with open(self.__file_worker) as file:
-            resp_data = json.load(file)
-        return self.parse_obj(resp_data['items'])
+            file_line_count = sum([1 for line in file])
+        if file_line_count > 0:
+            with open(self.__file_worker) as file:
+                resp_data = json.load(file)
+        else:
+            return []
+
+        if 'items' in resp_data:
+            resp_data = resp_data['items']
+
+        return self.parse_obj(resp_data)
 
     @staticmethod
     def parse_obj(vacancies_obj: list) -> list:
@@ -28,4 +37,5 @@ class Parser:
             else:
                 salary_from = None
             vacancies.append(Vacancy(vacancy['name'], url, area, salary_from, requirement))
+
         return vacancies

@@ -1,0 +1,3 @@
+from src.connector import json_vcn_connector
+
+JSONVacancyConnector = json_vcn_connector.JSONVacancyConnector
