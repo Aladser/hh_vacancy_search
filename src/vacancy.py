@@ -75,6 +75,6 @@ class Vacancy(LogMixin):
           f"Название: {self.__name}\n"
           f"Ссылка:{self.__url}\n"
           f"Место работы: {self.__area}\n"
-          f"Зарплата: {self.__salary_from}\n"
+          f"Зарплата: от {self.__salary_from}\n"
           f"Требования: {self.__requirements}")
 

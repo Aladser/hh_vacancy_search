@@ -3,6 +3,10 @@ from abc import ABC, abstractmethod
 
 class BasicVacancyConnector(ABC):
     @abstractmethod
+    def get_vacancies(self, params: dict = None) -> list:
+        pass
+
+    @abstractmethod
     def add_vacancy(self, vacancy):
         pass
 

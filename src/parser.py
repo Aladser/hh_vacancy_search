@@ -24,7 +24,7 @@ class Parser:
         return resp_data
 
     @staticmethod
-    def parse_to_vacancy_cls(vacancies_obj: list) -> list:
+    def parse_obj_to_vacancy_cls_copy(vacancies_obj: list) -> list:
         """парсинг профессий из объекта"""
         vacancies = []
         for i in range(len(vacancies_obj)):
@@ -33,9 +33,9 @@ class Parser:
             area = vacancy['area']['name'] if vacancy['area']['name'] else None
             requirement = vacancy['snippet']['requirement'] if vacancy['snippet']['requirement'] else None
             if vacancy['salary']:
-                salary_from = f"от {vacancy['salary']['from']} {vacancy['salary']['currency']}"
+                salary_from = f"{vacancy['salary']['from']} {vacancy['salary']['currency']}"
             else:
                 salary_from = None
-            vacancies.append(Vacancy(vacancy['name'], url, area, salary_from, requirement))
+            vacancies.append(Vacancy(vacancy['id'], vacancy['name'], url, area, salary_from, requirement))
 
         return vacancies
