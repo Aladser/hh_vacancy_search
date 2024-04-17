@@ -24,7 +24,7 @@ class Parser:
         return resp_data
 
     @staticmethod
-    def parse_obj(vacancies_obj: list) -> list:
+    def parse_to_vacancy_cls(vacancies_obj: list) -> list:
         """парсинг профессий из объекта"""
         vacancies = []
         for i in range(len(vacancies_obj)):
