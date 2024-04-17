@@ -81,4 +81,4 @@ class HHApi(BasicApi, Parser):
             vacancies = response.json()['items']
             vacancies_obj.extend(vacancies)
             self.__params['page'] += 1
-        return self.parse_to_vacancy_cls(vacancies_obj)
+        return self.parse_obj_to_vacancy_cls(vacancies_obj)
