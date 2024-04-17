@@ -57,22 +57,28 @@ class JSONVacancyConnector(BasicVacancyConnector):
             return True
         return False
 
-    def get_vacancies(self, params: dict) -> list:
+    def get_vacancies(self, params: dict = None) -> list:
         # получение списка объектов вакансий из JSON-файла
         vacanices_obj_list = self.__parser.parse_json()
+        vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(vacanices_obj_list)
+        # получение списка объектов вакансий, полученный из списка вакансий класса Vacancy
+        vacanices_obj_list = [el.get_props_dict() for el in vacancy_copy_list]
         # поиск вакансий в списке объектов вакансий
         found_vacancies_obj_list = []
-        for vcn in vacanices_obj_list:
-            is_matching = True
-            for par_key, par_value in params.items():
-                if vcn[par_key] != par_value:
-                    is_matching = False
-                    break
-            if is_matching:
+        if params:
+            for vcn in vacanices_obj_list:
+                is_matching = True
+                for par_key, par_value in params.items():
+                    if vcn[par_key] != par_value:
+                        is_matching = False
+                        break
+                if is_matching:
+                    found_vacancies_obj_list.append(vcn)
+        else:
+            for vcn in vacanices_obj_list:
                 found_vacancies_obj_list.append(vcn)
 
-        found_vacancies_list = self.__parser.parse_obj_to_vacancy_cls(found_vacancies_obj_list)
-        return found_vacancies_list
+        return found_vacancies_obj_list
 
     @property
     def vacancy_count(self) -> int:
