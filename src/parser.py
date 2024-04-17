@@ -21,7 +21,7 @@ class Parser:
         if 'items' in resp_data:
             resp_data = resp_data['items']
 
-        return self.parse_obj(resp_data)
+        return resp_data
 
     @staticmethod
     def parse_obj(vacancies_obj: list) -> list:

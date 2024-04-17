@@ -37,7 +37,7 @@ class HHApi(BasicApi, Parser):
     __url = 'https://api.hh.ru/vacancies'
     __headers = {'User-Agent': 'HH-User-Agent'}
 
-    possible_params_list = [
+    __possible_params_list = [
         'text', 'page', 'per_page', 'search_field', 'employment', 'schedule', 'area', 'professional_role', 'salary',
         'only_with_salary', 'period', 'date_from', 'order_by'
     ]
@@ -69,7 +69,7 @@ class HHApi(BasicApi, Parser):
         return self.__params[key]
 
     def set_param(self, key: str, value: str = None) -> None:
-        if key not in self.__params:
+        if key not in self.__possible_params_list:
             raise ValueError(f"{key}{self.__wrong_key_exception_msg_end}")
         self.__params[key] = value
 
