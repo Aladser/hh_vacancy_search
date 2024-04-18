@@ -5,7 +5,7 @@ from src import Vacancy
 
 @pytest.fixture
 def working_file_path():
-    return '../data/vacancies.json'
+    return 'data/vacancies.json'
 
 
 @pytest.fixture
@@ -20,6 +20,11 @@ def vacancy():
         'salary_currency': 'руб'
     }
     return Vacancy(**vcn_params)
+
+
+def test_init():
+    with pytest.raises(FileNotFoundError):
+        JSONVacancyConnector('test')
 
 
 def test_work(working_file_path, vacancy):
@@ -55,4 +60,8 @@ def test_work(working_file_path, vacancy):
     connector.delete_vacancy(100)
     assert len(connector.get_vacancies()) == job_count
     connector.delete_vacancy()
-    assert len(connector.get_vacancies()) == job_count -1
+    job_count -= 1
+    assert len(connector.get_vacancies()) == job_count
+    # удаление несуществующей записи
+    connector.delete_vacancy(101)
+    assert len(connector.get_vacancies()) == job_count
