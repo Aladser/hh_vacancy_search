@@ -22,6 +22,11 @@ def vacancy():
     return Vacancy(**vcn_params)
 
 
+def test_init():
+    with pytest.raises(FileNotFoundError):
+        JSONVacancyConnector('test')
+
+
 def test_work(working_file_path, vacancy):
     print()
     connector = JSONVacancyConnector(working_file_path)
@@ -55,4 +60,8 @@ def test_work(working_file_path, vacancy):
     connector.delete_vacancy(100)
     assert len(connector.get_vacancies()) == job_count
     connector.delete_vacancy()
-    assert len(connector.get_vacancies()) == job_count -1
+    job_count -= 1
+    assert len(connector.get_vacancies()) == job_count
+    # удаление несуществующей записи
+    connector.delete_vacancy(101)
+    assert len(connector.get_vacancies()) == job_count
