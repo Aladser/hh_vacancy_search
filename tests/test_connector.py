@@ -15,8 +15,8 @@ def vacancy():
         'name': 'программист',
         'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
         'area': 'Архара',
-        'salary_from': '10000',
-        'salary_to': '20000',
+        'salary_from': 10000,
+        'salary_to': 20000,
         'salary_currency': 'руб'
     }
     return Vacancy(**vcn_params)
@@ -44,7 +44,7 @@ def test_work(working_file_path, vacancy):
             'url': 'https://blagoveschensk.hh.ru/vacancy/93900476',
             'area': area_list[i],
             'salary_from': salary_from[i],
-            'salary_to': '10000',
+            'salary_to': 10000,
             'salary_currency': 'руб'
         }
         connector.add_vacancy(Vacancy(**vcn_params))
