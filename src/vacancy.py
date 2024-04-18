@@ -1,5 +1,4 @@
 from src.log_mixin import LogMixin
-from typing import Self
 
 
 class Vacancy(LogMixin):
