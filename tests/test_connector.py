@@ -5,7 +5,7 @@ from src import Vacancy
 
 @pytest.fixture
 def working_file_path():
-    return '../data/vacancies.json'
+    return 'data/vacancies.json'
 
 
 @pytest.fixture

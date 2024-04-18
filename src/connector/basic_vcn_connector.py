@@ -13,3 +13,8 @@ class BasicVacancyConnector(ABC):
     @abstractmethod
     def delete_vacancy(self, vacancy):
         pass
+
+    @property
+    @abstractmethod
+    def vacancy_count(self) -> int:
+        pass
