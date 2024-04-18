@@ -1,5 +1,3 @@
-import os
-
 from src.api import HHApi
 from src import user_interaction
 

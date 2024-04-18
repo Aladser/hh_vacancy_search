@@ -24,6 +24,12 @@ def test_init(job_params):
     for key in job_params:
         assert job_params[key] == vacancy_props[key]
     assert vacancy.salary == f"от {job_params['salary_from']} до {job_params['salary_to']} {job_params['salary_currency']}"
+    props_str = ('Vacancy(_Vacancy__vcn_id:1, _Vacancy__name:программист, _Vacancy__salary_currency:руб, '
+                 '_Vacancy__salary_from:1000, _Vacancy__salary_to:2000, '
+                 '_Vacancy__url:https://blagoveschensk.hh.ru/vacancy/93900476, _Vacancy__area:Благовещенск, '
+                 '_Vacancy__requirement:уметь читать)')
+    assert vacancy.get_props_str() == props_str
+    assert vacancy.log() == None
 
     # не заданы атрибуты
     job_params['url'] = None
