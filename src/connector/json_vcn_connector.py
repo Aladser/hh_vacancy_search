@@ -16,8 +16,7 @@ class JSONVacancyConnector(BasicVacancyConnector):
             raise FileNotFoundError
 
         self.__file_worker = file_worker
-        self.__parser = Parser(file_worker)
-        self.__vacancies_obj_list = self.__parser.parse_json()
+        self.__vacancies_obj_list = Parser.parse_json(file_worker)
         self.__vacancy_count = len(self.__vacancies_obj_list)
 
     @property
@@ -70,7 +69,7 @@ class JSONVacancyConnector(BasicVacancyConnector):
         return False
 
     def get_vacancies(self, params: dict = None) -> list:
-        vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(self.__vacancies_obj_list)
+        vacancy_copy_list = Parser.parse_obj_to_vacancy_cls_copy(self.__vacancies_obj_list)
         # получение списка объектов вакансий, полученных из списка вакансий класса Vacancy
         vacancies_obj_list = [el.get_props_dict() for el in vacancy_copy_list]
 

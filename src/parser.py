@@ -4,17 +4,13 @@ from src.vacancy import Vacancy
 
 
 class Parser:
-    __file_worker: str
-
-    def __init__(self, file_worker):
-        self.__file_worker = file_worker
-
-    def parse_json(self) -> list:
+    @staticmethod
+    def parse_json(file_worker) -> list:
         """парсинг профессий из JSON-файла"""
-        with open(self.__file_worker) as file:
+        with open(file_worker) as file:
             file_line_count = sum([1 for line in file])
         if file_line_count > 0:
-            with open(self.__file_worker) as file:
+            with open(file_worker) as file:
                 resp_data = json.load(file)
         else:
             return []
