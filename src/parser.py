@@ -37,14 +37,12 @@ class Parser:
                 'area': vacancy['area']['name'] if vacancy['area'] else None,
                 'requirement': re.sub(r'\<[^>]*\>', '', vacancy['snippet']['requirement']) if vacancy['snippet']['requirement'] else None,
             }
-            if vacancy['salary'] and vacancy['salary'] != '':
+            if vacancy['salary']:
                 job_params['salary_from'] = vacancy['salary']['from'] if vacancy['salary']['from'] else ''
                 job_params['salary_to'] = vacancy['salary']['to'] if vacancy['salary']['to'] else ''
-                job_params['salary_currency'] = vacancy['salary']['currency']
+                job_params['salary_currency'] = vacancy['salary']['currency'] if vacancy['salary']['currency'] else ''
             else:
-                job_params['salary_from'] = None
-                job_params['salary_to'] = None
-                job_params['salary_currency'] = None
+                continue
             vacancies.append(Vacancy(**job_params))
 
         return vacancies
