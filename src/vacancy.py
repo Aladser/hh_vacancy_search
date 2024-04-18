@@ -37,7 +37,7 @@ class Vacancy(LogMixin):
         self.__name = name
 
         # проверка зарплаты
-        if salary_currency or salary_currency != '':
+        if salary_currency and salary_currency != '':
             self.__salary_currency = salary_currency
             self.__salary_from = int(salary_from) if salary_from else None
             self.__salary_to = int(salary_to) if salary_to else None
