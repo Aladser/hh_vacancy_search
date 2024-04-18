@@ -8,7 +8,8 @@ def api():
 
 
 def test_work(api):
-    vacancies_list = api.load_vacancies('PHP разработчик')
-    assert len(vacancies_list) == 30
+    job_count = 10
+    vacancies_list = api.load_vacancies('PHP разработчик', job_count)
+    assert len(vacancies_list) == job_count
     print()
     [print(f"{vcn}\n") for vcn in vacancies_list]

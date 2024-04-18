@@ -23,26 +23,35 @@ class HHApi(BasicApi):
         self.__params = {
             'page': 0,
             'per_page': self.__per_page,
-            'order_by': 'salary_desc',
-            'area': 113,
+            'order_by': 'salary_desc', # по убыванию зарплаты
+            'area': 113, # Вся Россия
             'text': ''
         }
 
     def load_vacancies(self, keyword, job_count=None, salary=None) -> list:
+        """
+        Загружает вакансии с сайта
+        :param keyword: фраза для поиска вакансий
+        :param job_count: число вакансий
+        :param salary: желаемая зарплата
+        :return: список Vacancy
+        """
+
         # установка числа вакансий
         if job_count and job_count != '' and job_count > 0:
             self.__params['per_page'] = job_count
+        # установка зарплаты
         if salary and salary != "" and salary > 0:
             self.__params['salary'] = salary
 
-        vacancies_obj = []
+        vacancies_obj_list = []
         self.__params['text'] = keyword
         while self.__params.get('page') != self.__page_count:
             response = requests.get(self.__url, headers=self.__headers, params=self.__params)
-            vacancies = response.json()['items']
-            vacancies_obj.extend(vacancies)
+            resp_vacancies = response.json()['items']
+            vacancies_obj_list.extend(resp_vacancies)
             self.__params['page'] += 1
-        return Parser.parse_obj_to_vacancy_cls_copy(vacancies_obj)
+        return Parser.parse_obj_to_vacancy_cls_copy(vacancies_obj_list)
 
     @property
     def params(self) -> str:
