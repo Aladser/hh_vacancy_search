@@ -81,6 +81,7 @@ def test_init(job_params):
     with pytest.raises(ValueError, match='не указано название вакансии'):
         Vacancy(**job_params)
 
+
 def test_work(job_params):
     print()
     # зарплата программист 1 < программист 2
