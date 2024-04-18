@@ -27,6 +27,6 @@
     - ``vacancy.salary_numeric_value_from`` заплата от
     - ``vacancy.salary_numeric_value_to`` - зарплата до
     - ``vacancy.salary``полное описание зарплаты
-    - ``user_interaction`` - функция интерактива с пользователем
+  + ``user_interaction`` - функция интерактива с пользователем
 * **tests**
-* ``main.py`` - точка входа
+* ``main.py`` - точка входа, интерактив с пользователем
