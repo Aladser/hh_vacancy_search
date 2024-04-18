@@ -8,6 +8,7 @@ from src.connector.basic_vcn_connector import BasicVacancyConnector
 class JSONVacancyConnector(BasicVacancyConnector):
     __file_worker: str
     __parser: Parser
+    __vacancy_count: int
 
     def __init__(self, file_worker):
         if not os.path.isfile(file_worker):
@@ -15,19 +16,14 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
         self.__file_worker = file_worker
         self.__parser = Parser(file_worker)
+        vacancies_obj_list = self.__parser.parse_json()
+        self.__vacancy_count = len(vacancies_obj_list)
 
     @property
     def vacancy_count(self) -> int:
-        vacancies_obj_list = self.__parser.parse_json()
-        return len(vacancies_obj_list)
+        return self.__vacancy_count
 
     def add_vacancy(self, new_vacancy: Vacancy) -> bool:
-        """
-        добавляет вакансию в JSON-файл
-        :param new_vacancy: новая вакансия Vacancy
-        :return: True - успешное добавление
-        """
-
         # получение списка объектов вакансий из JSON-файла
         vacancies_obj_list = self.__parser.parse_json()
 
@@ -50,15 +46,10 @@ class JSONVacancyConnector(BasicVacancyConnector):
         json_data = json.dumps({'items': vacancies_obj_list})
         with open(self.__file_worker, 'w') as file:
             file.write(json_data)
+        self.__vacancy_count += 1
         return True
 
     def delete_vacancy(self, deleted_vacancy_id: int = None) -> bool:
-        """
-        удаляет вакансию в JSON-файле
-        :param deleted_vacancy_id: id удаляемой вакансии
-        :return: True - успешное удаление
-        """
-
         # получение списка объектов вакансий из JSON-файла
         vcn_obj_list = self.__parser.parse_json()
 
@@ -79,16 +70,11 @@ class JSONVacancyConnector(BasicVacancyConnector):
             json_data = json.dumps({'items': vcn_obj_list})
             with open(self.__file_worker, 'w') as file:
                 file.write(json_data)
+            self.__vacancy_count -= 1
             return True
         return False
 
     def get_vacancies(self, params: dict = None) -> list:
-        """
-        получает вакансии из JSON-файла по заданным параметрам
-        :param params: параметры вакансии
-        :return: список объектов вакансий
-        """
-
         # получение списка объектов вакансий из JSON-файла
         vacancies_obj_list = self.__parser.parse_json()
         vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(vacancies_obj_list)

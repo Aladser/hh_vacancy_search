@@ -19,8 +19,8 @@ class Vacancy(LogMixin):
     __url: str
     __area: str
     __requirement: str
-    __salary_from: float
-    __salary_to: float
+    __salary_from: int
+    __salary_to: int
     __salary_currency: str
 
     def __init__(
@@ -39,8 +39,8 @@ class Vacancy(LogMixin):
         # проверка зарплаты
         if salary_currency or salary_currency != '':
             self.__salary_currency = salary_currency
-            self.__salary_from = salary_from if salary_from else None
-            self.__salary_to = salary_to if salary_to else None
+            self.__salary_from = int(salary_from) if salary_from else None
+            self.__salary_to = int(salary_to) if salary_to else None
         else:
             self.__salary_currency = ''
             self.__salary_from = None
@@ -75,12 +75,12 @@ class Vacancy(LogMixin):
         return self.__salary_currency
 
     @property
-    def salary_numeric_value_from(self) -> float:
-        return float(self.__salary_from) if self.__salary_from and self.__salary_from else None
+    def salary_numeric_value_from(self) -> int:
+        return self.__salary_from if self.__salary_from else None
 
     @property
-    def salary_numeric_value_to(self) -> float:
-        return float(self.__salary_to) if self.__salary_from and self.__salary_to else None
+    def salary_numeric_value_to(self) -> int:
+        return self.__salary_to if self.__salary_to else None
 
     @property
     def salary(self) -> str:
