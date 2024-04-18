@@ -9,6 +9,7 @@ class JSONVacancyConnector(BasicVacancyConnector):
     __file_worker: str
     __parser: Parser
     __vacancy_count: int
+    __vacancies_obj_list: list
 
     def __init__(self, file_worker):
         if not os.path.isfile(file_worker):
@@ -16,17 +17,14 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
         self.__file_worker = file_worker
         self.__parser = Parser(file_worker)
-        vacancies_obj_list = self.__parser.parse_json()
-        self.__vacancy_count = len(vacancies_obj_list)
+        self.__vacancies_obj_list = self.__parser.parse_json()
+        self.__vacancy_count = len(self.__vacancies_obj_list)
 
     @property
     def vacancy_count(self) -> int:
         return self.__vacancy_count
 
     def add_vacancy(self, new_vacancy: Vacancy) -> bool:
-        # получение списка объектов вакансий из JSON-файла
-        vacancies_obj_list = self.__parser.parse_json()
-
         # новая вакансия как объект списка объектов вакансий JSON файла
         new_vacancy_json_obj = {
             'id': new_vacancy.id,
@@ -42,32 +40,29 @@ class JSONVacancyConnector(BasicVacancyConnector):
         }
 
         # сохранение новой вакансии в JSON-файл
-        vacancies_obj_list.append(new_vacancy_json_obj)
-        json_data = json.dumps({'items': vacancies_obj_list})
+        self.__vacancies_obj_list.append(new_vacancy_json_obj)
+        json_data = json.dumps({'items': self.__vacancies_obj_list})
         with open(self.__file_worker, 'w') as file:
             file.write(json_data)
         self.__vacancy_count += 1
         return True
 
     def delete_vacancy(self, deleted_vacancy_id: int = None) -> bool:
-        # получение списка объектов вакансий из JSON-файла
-        vcn_obj_list = self.__parser.parse_json()
-
         if not deleted_vacancy_id:
             # если не указан удаляемый элемент, удаляется последний
-            found_index = len(vcn_obj_list) - 1
+            found_index = self.__vacancy_count - 1
         else:
             # поиск удаляемого элемента по уникальному id (первое совпадение)
             found_index = -1
-            for i in range(len(vcn_obj_list)):
-                if vcn_obj_list[i]['id'] == deleted_vacancy_id:
+            for i in range(self.__vacancy_count):
+                if self.__vacancies_obj_list[i]['id'] == deleted_vacancy_id:
                     found_index = i
                     break
 
         # удаление элемента и перезапись JSON-файла
         if found_index > -1:
-            vcn_obj_list.pop(found_index)
-            json_data = json.dumps({'items': vcn_obj_list})
+            self.__vacancies_obj_list.pop(found_index)
+            json_data = json.dumps({'items': self.__vacancies_obj_list})
             with open(self.__file_worker, 'w') as file:
                 file.write(json_data)
             self.__vacancy_count -= 1
@@ -75,10 +70,7 @@ class JSONVacancyConnector(BasicVacancyConnector):
         return False
 
     def get_vacancies(self, params: dict = None) -> list:
-        # получение списка объектов вакансий из JSON-файла
-        vacancies_obj_list = self.__parser.parse_json()
-        vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(vacancies_obj_list)
-
+        vacancy_copy_list = self.__parser.parse_obj_to_vacancy_cls_copy(self.__vacancies_obj_list)
         # получение списка объектов вакансий, полученных из списка вакансий класса Vacancy
         vacancies_obj_list = [el.get_props_dict() for el in vacancy_copy_list]
 
