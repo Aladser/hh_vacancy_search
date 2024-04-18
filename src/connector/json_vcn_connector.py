@@ -92,7 +92,6 @@ class JSONVacancyConnector(BasicVacancyConnector):
                 if is_matching:
                     found_vacancies_obj_list.append(vcn)
         else:
-            for vcn in vacancies_obj_list:
-                found_vacancies_obj_list.append(vcn)
+            [found_vacancies_obj_list.append(vcn) for vcn in vacancies_obj_list]
 
         return found_vacancies_obj_list
