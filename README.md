@@ -7,7 +7,7 @@
         + ``api.load_vacancies()``
       * ``HHApi``
   + **connector**
-      * ``BasicVacancyConnector`` абстрактный класс коннектора. Операции производятся со списком объектов, полученных из JSON-файла. Измененный список перезаписывает JSON-файл.
+      * ``BasicVacancyConnector`` абстрактный класс коннектора.
         - ``connector.add_vacancy()`` - добавляет вакансию в JSON-файл
         - ``connector.get_vacancies()`` - получает вакансии из JSON-файла
         - ``connector.delete_vacancy()`` - удаляет вакансию из JSON-файла
