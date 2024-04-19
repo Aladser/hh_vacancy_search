@@ -2,21 +2,21 @@ def user_interaction():
     """интерактив с пользователем"""
     query_params = {
         'keyword': {
-         'query_text': 'Введите поисковый запрос:',
-         'type': str,
-         'value': None
-         },
+            'query_text': 'Введите поисковый запрос:',
+            'type': str,
+            'value': None
+        },
         'job_count': {
-         'query_text': 'Введите количество вакансий для вывода в топ N. Нажмите Enter, чтобы пропустить:',
-         'type': int,
-         'value': None
-         },
-        'salary':{
-         # глупо указывать диапазон. Кто ставит верхнюю планку зарплате при поиске?)
-         'query_text': 'Введите желаемую зарплату. Нажмите Enter, чтобы пропустить:',
-         'type': int,
-         'value': None
-         }
+            'query_text': 'Введите количество вакансий для вывода в топ N. Нажмите Enter, чтобы пропустить:',
+            'type': int,
+            'value': None
+        },
+        'salary': {
+            # глупо указывать диапазон. Кто ставит верхнюю планку зарплате при поиске?)
+            'query_text': 'Введите желаемую зарплату. Нажмите Enter, чтобы пропустить:',
+            'type': int,
+            'value': None
+        }
     }
 
     for key, value in query_params.items():
@@ -44,4 +44,3 @@ def user_interaction():
         'job_count': query_params['job_count']['value'],
         'salary': query_params['salary']['value']
     }
-
