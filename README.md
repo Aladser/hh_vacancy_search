@@ -3,16 +3,19 @@
 * **data**
 * **src**
   + **api**
-      * ``BasicApi`` абстрактный класс api
+      * ``BasicApi`` абстрактный класс api. Требуется реализации загрузки вакансий из ресурса.
         + ``api.load_vacancies()`` - возвращает вакансии с ресурса по заданным параметрам
       * ``HHApi``
   + **connector**
-      * ``BasicVacancyConnector`` абстрактный класс коннектора
+      * ``BasicVacancyConnector`` абстрактный класс коннектора. Операции производятся со списком объектов, полученных из JSON-файла. Измененный список перезаписывает JSON-файл.
         - ``connector.add_vacancy()`` - добавляет вакансию в JSON-файл
         - ``connector.get_vacancies()`` - получает вакансии из JSON-файла
         - ``connector.delete_vacancy()`` - удаляет вакансию из JSON-файла
+        - ``vacancy_count()`` - число вакансий
       * ``JSONVacancyConnector``
-  + ``LogMixin`` - класс логирования
+  + ``LogMixin`` - класс логирования.
+      - ``get_props_str()`` - словарь атрибутов как строка
+      - ``get_props_dict()`` - словарь атрибутов как форматированный словарь
   + ``Parser``
     * ``parser.parse_json()`` - парсит JSON файл в список объектов
     * ``parser.parse_obj_to_vacancy_cls_copy()`` - парсит список объектов в Vacancy список
