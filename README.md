@@ -11,7 +11,7 @@
         - ``connector.add_vacancy()`` - добавляет вакансию в JSON-файл
         - ``connector.get_vacancies()`` - получает вакансии из JSON-файла
         - ``connector.delete_vacancy()`` - удаляет вакансию из JSON-файла
-        - ``vacancy_count()`` - число вакансий
+        - ``connector.vacancy_count()`` - число вакансий
       * ``JSONVacancyConnector``
   + ``LogMixin`` - класс логирования.
       - ``get_props_str()`` - словарь атрибутов как строка
