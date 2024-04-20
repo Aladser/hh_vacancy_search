@@ -1,5 +1,4 @@
-import json
-import re
+import json, re
 from src.vacancy import Vacancy
 
 
@@ -30,9 +29,12 @@ class Parser:
                 'vcn_id': vacancy['id'],
                 'name': vacancy['name'],
                 'url': vacancy['alternate_url'] if vacancy['alternate_url'] else None,
-                'area': vacancy['area']['name'] if vacancy['area'] else None,
-                'requirement': re.sub(r'\<[^>]*\>', '', vacancy['snippet']['requirement']) if vacancy['snippet']['requirement'] else None,
+                'area': vacancy['area']['name'] if vacancy['area'] else None
             }
+            if vacancy['snippet']['requirement']:
+                job_params['requirement'] = re.sub(r'\<[^>]*\>', '', vacancy['snippet']['requirement'])
+            else:
+                job_params['requirement'] = None
             if vacancy['salary']:
                 job_params['salary_from'] = vacancy['salary']['from'] if vacancy['salary']['from'] else ''
                 job_params['salary_to'] = vacancy['salary']['to'] if vacancy['salary']['to'] else ''
