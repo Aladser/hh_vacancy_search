@@ -1,6 +1,4 @@
-import json
-import os.path
-
+import json,os.path
 from src import Parser, Vacancy
 from src.connector.basic_vcn_connector import BasicVacancyConnector
 
@@ -40,9 +38,8 @@ class JSONVacancyConnector(BasicVacancyConnector):
 
         # сохранение новой вакансии в JSON-файл
         self.__vacancies_obj_list.append(new_vacancy_json_obj)
-        json_data = json.dumps({'items': self.__vacancies_obj_list})
         with open(self.__file_worker, 'w') as file:
-            file.write(json_data)
+            json.dump({'items': self.__vacancies_obj_list}, file)
         self.__vacancy_count += 1
         return True
 

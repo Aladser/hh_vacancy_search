@@ -34,7 +34,7 @@ def test_work(working_file_path, vacancy):
     area_list = ['Зея', 'Зея', 'Тында', 'Москва', 'Тверь']
     salary_from = [1000, 2000, 3000, 3000, 3000]
 
-    # пеорезаписываю json-файл тестовыми данными
+    # перезаписываю json-файл тестовыми данными
     for i in range(connector.vacancy_count):
         connector.delete_vacancy()
     for i in range(5):
