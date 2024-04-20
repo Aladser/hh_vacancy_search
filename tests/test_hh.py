@@ -13,4 +13,4 @@ def test_work(api):
     assert len(vacancies_list) == job_count
     assert api.params == 'page:1, per_page:30, order_by:salary_desc, area:113, text:PHP разработчик, salary:10000'
     print()
-    [print(f"{vcn}\n") for vcn in vacancies_list]
+    [print(vcn, end="\n\n") for vcn in vacancies_list]

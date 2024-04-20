@@ -27,7 +27,8 @@ def user_interaction():
                     user_input = input(value['query_text'])
                     value['value'] = int(user_input)
                 except ValueError:
-                    print('Не введено число.')
+                    if user_input != '':
+                        print('Не введено число.')
                 finally:
                     if isinstance(value['value'], int):
                         break
