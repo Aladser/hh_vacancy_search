@@ -35,7 +35,6 @@ def user_interaction():
                     elif user_input == '':
                         value['value'] = None
                         break
-                    continue
         else:
             # любой другой тип преобразуется к строке
             value['value'] = str(input(value['query_text']))
