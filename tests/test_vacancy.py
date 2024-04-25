@@ -29,8 +29,9 @@ def test_init(job_params):
                  "_Vacancy__url:https://blagoveschensk.hh.ru/vacancy/93900476, _Vacancy__area:Благовещенск, "
                  "_Vacancy__requirement:уметь читать)")
     assert vacancy.get_props_str() == props_str
+    assert vacancy.log() is None
 
-    # не заданы атрибуты
+    # не заданы атрибуты url,area,requirement
     job_params['url'] = None
     job_params['area'] = None
     job_params['requirement'] = None
@@ -71,6 +72,12 @@ def test_init(job_params):
     vacancy = Vacancy(**job_params)
     assert vacancy.salary == 'от 1000 руб'
 
+    # указана валюта, не указаны зарплаты
+    job_params['salary_from'] = None
+    job_params['salary_to'] = None
+    vacancy = Vacancy(**job_params)
+    assert vacancy.salary == 'не указана'
+
     # неположительная зарплата
     job_params['salary_from'] = -1
     with pytest.raises(ValueError, match='Начальная зарплата должна быть положительным числом'):
@@ -88,6 +95,7 @@ def test_init(job_params):
     job_params['name'] = None
     with pytest.raises(ValueError, match='не указано название вакансии'):
         Vacancy(**job_params)
+
 
 def test_work(job_params):
     print()
