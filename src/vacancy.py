@@ -33,6 +33,7 @@ class Vacancy(LogMixin):
             raise ValueError('не указано название вакансии')
         if vcn_id == '' or vcn_id is None:
             raise ValueError('не указан id вакансии')
+
         self.__vcn_id = vcn_id
         self.__name = name
 
@@ -42,7 +43,7 @@ class Vacancy(LogMixin):
             self.__salary_from = int(salary_from) if salary_from else None
             self.__salary_to = int(salary_to) if salary_to else None
         else:
-            self.__salary_currency = ''
+            self.__salary_currency = None
             self.__salary_from = None
             self.__salary_to = None
 
@@ -76,39 +77,51 @@ class Vacancy(LogMixin):
 
     @property
     def salary_numeric_value_from(self) -> int:
-        return self.__salary_from if self.__salary_from else None
+        return self.__salary_from
 
     @property
     def salary_numeric_value_to(self) -> int:
-        return self.__salary_to if self.__salary_to else None
+        return self.__salary_to
 
     @property
     def salary(self) -> str:
-        if self.__salary_from and self.__salary_to:
-            return f"от {self.__salary_from} до {self.__salary_to} {self.__salary_currency}"
-        elif self.__salary_from:
-            return f"от {self.__salary_from} {self.__salary_currency}"
-        elif self.__salary_to:
-            return f"до {self.__salary_to} {self.__salary_currency}"
+        if self.__salary_currency:
+            if self.__salary_from and self.__salary_to:
+                return f"от {self.__salary_from} до {self.__salary_to} {self.__salary_currency}"
+            elif self.__salary_from:
+                return f"от {self.__salary_from} {self.__salary_currency}"
+            elif self.__salary_to:
+                return f"до {self.__salary_to} {self.__salary_currency}"
+            else:
+                return 'не указана'
         else:
             return 'не указана'
 
     @staticmethod
-    def is_better_salary(vacancy_1, vacancy_2) -> str:
+    def is_better_salary(vacancy_1, vacancy_2):
         if vacancy_1.salary_currency != vacancy_2.salary_currency:
-            raise ValueError('зарплаты вакансий в разных валютах')
-        elif vacancy_1.salary_numeric_value_from and vacancy_2.salary_numeric_value_from:
-            if float(vacancy_1.salary_numeric_value_from) > float(vacancy_2.salary_numeric_value_from):
-                return f"{vacancy_1.id} {vacancy_1.name}"
-            else:
-                return f"{vacancy_2.id} {vacancy_2.name}"
-        elif vacancy_1.salary_numeric_value_to and vacancy_2.salary_numeric_value_to:
-            if vacancy_1.salary_numeric_value_to > vacancy_2.salary_numeric_value_to:
-                return f"{vacancy_1.id} {vacancy_1.name}"
-            else:
-                return f"{vacancy_2.id} {vacancy_2.name}"
+            try:
+                raise ValueError
+            except ValueError:
+                print('Зарплаты вакансий в разных валютах')
+            finally:
+                return False
+
+        vcn1_salary_from = vacancy_1.salary_numeric_value_from
+        vcn2_salary_from = vacancy_2.salary_numeric_value_from
+        vcn1_salary_to = vacancy_1.salary_numeric_value_to
+        vcn2_salary_to = vacancy_2.salary_numeric_value_to
+        if vcn1_salary_from and vcn2_salary_from:
+            return vacancy_1 if vcn1_salary_from > vcn2_salary_from else vacancy_2
+        elif vcn1_salary_to and vcn2_salary_to:
+            return vacancy_1 if vcn1_salary_to > vcn2_salary_to else vacancy_2
         else:
-            raise ValueError('Нет данных для корректного сравнения зарплат')
+            try:
+                raise ValueError
+            except ValueError:
+                print('Нет данных для корректного сравнения зарплат')
+            finally:
+                return False
 
     def __str__(self):
         return (f""

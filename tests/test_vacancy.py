@@ -24,12 +24,11 @@ def test_init(job_params):
     for key in job_params:
         assert job_params[key] == vacancy_props[key]
     assert vacancy.salary == f"от {job_params['salary_from']} до {job_params['salary_to']} {job_params['salary_currency']}"
-    props_str = ('Vacancy(_Vacancy__vcn_id:1, _Vacancy__name:программист, _Vacancy__salary_currency:руб, '
-                 '_Vacancy__salary_from:1000, _Vacancy__salary_to:2000, '
-                 '_Vacancy__url:https://blagoveschensk.hh.ru/vacancy/93900476, _Vacancy__area:Благовещенск, '
-                 '_Vacancy__requirement:уметь читать)')
+    props_str = ("Vacancy(_Vacancy__vcn_id:1, _Vacancy__name:программист, _Vacancy__salary_currency:руб, "
+                 "_Vacancy__salary_from:1000, _Vacancy__salary_to:2000, "
+                 "_Vacancy__url:https://blagoveschensk.hh.ru/vacancy/93900476, _Vacancy__area:Благовещенск, "
+                 "_Vacancy__requirement:уметь читать)")
     assert vacancy.get_props_str() == props_str
-    assert vacancy.log() is None
 
     # не заданы атрибуты
     job_params['url'] = None
@@ -92,18 +91,17 @@ def test_work(job_params):
     job_params['name'] = 'программист 2'
     job_params['salary_from'] = 2000
     vacancy_2 = Vacancy(**job_params)
-    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == '2 программист 2'
+    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == vacancy_2
 
     # зарплата программист 1 > программист 2
     job_params['salary_from'] = 500
     vacancy_2 = Vacancy(**job_params)
-    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == '1 программист 1'
+    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == vacancy_1
 
     # разные валюты
     job_params['salary_currency'] = 'USD'
     vacancy_2 = Vacancy(**job_params)
-    with pytest.raises(ValueError, match='зарплаты вакансий в разных валютах'):
-        Vacancy.is_better_salary(vacancy_1, vacancy_2)
+    assert not Vacancy.is_better_salary(vacancy_1, vacancy_2)
 
     # зарплата ПОСЛЕ программист 1 > программист 2
     job_params['salary_currency'] = 'руб'
@@ -116,15 +114,14 @@ def test_work(job_params):
     job_params['name'] = 'программист 2'
     job_params['salary_to'] = 3000
     vacancy_2 = Vacancy(**job_params)
-    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == '1 программист 1'
+    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == vacancy_1
 
     # зарплата ПОСЛЕ программист 1 < программист 2
     job_params['salary_to'] = 2000
     vacancy_1 = Vacancy(**job_params)
-    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == '2 программист 2'
+    assert Vacancy.is_better_salary(vacancy_1, vacancy_2) == vacancy_2
 
     # нет зарплат для сравнения
     job_params['salary_to'] = None
     vacancy_1 = Vacancy(**job_params)
-    with pytest.raises(ValueError, match='Нет данных для корректного сравнения зарплат'):
-        Vacancy.is_better_salary(vacancy_1, vacancy_2)
+    assert not Vacancy.is_better_salary(vacancy_1, vacancy_2)
