@@ -38,24 +38,24 @@ class Vacancy(LogMixin):
         self.__name = name
 
         # проверка зарплаты
-        if salary_currency and salary_currency != '':
+        if salary_currency and salary_currency != '' and (salary_from or salary_to):
             self.__salary_currency = salary_currency
 
             # начальная зарплата
-            if salary_from:
+            if salary_from and salary_from != '':
                 salary_from = int(salary_from)
                 if salary_from < 0:
                     raise ValueError('Начальная зарплата должна быть положительным числом')
-                self.__salary_from = int(salary_from)
+                self.__salary_from = salary_from
             else:
                 self.__salary_from = None
 
             # конечная зарплата
-            if salary_to:
+            if salary_to and salary_to:
                 salary_to = int(salary_to)
                 if salary_to < 0:
                     raise ValueError('Конечная зарплата должна быть положительным числом')
-                self.__salary_to = int(salary_to)
+                self.__salary_to = salary_to
             else:
                 self.__salary_to = None
         else:
@@ -108,8 +108,6 @@ class Vacancy(LogMixin):
                 return f"от {self.__salary_from} {self.__salary_currency}"
             elif self.__salary_to:
                 return f"до {self.__salary_to} {self.__salary_currency}"
-            else:
-                return 'не указана'
         else:
             return 'не указана'
 
