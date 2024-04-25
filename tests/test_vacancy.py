@@ -71,6 +71,15 @@ def test_init(job_params):
     vacancy = Vacancy(**job_params)
     assert vacancy.salary == 'от 1000 руб'
 
+    # неположительная зарплата
+    job_params['salary_from'] = -1
+    with pytest.raises(ValueError, match='Начальная зарплата должна быть положительным числом'):
+        Vacancy(**job_params)
+    job_params['salary_from'] = 1
+    job_params['salary_to'] = -1
+    with pytest.raises(ValueError, match='Конечная зарплата должна быть положительным числом'):
+        Vacancy(**job_params)
+
     # нет id и названия
     job_params['vcn_id'] = None
     with pytest.raises(ValueError, match='не указан id вакансии'):
@@ -79,7 +88,6 @@ def test_init(job_params):
     job_params['name'] = None
     with pytest.raises(ValueError, match='не указано название вакансии'):
         Vacancy(**job_params)
-
 
 def test_work(job_params):
     print()
