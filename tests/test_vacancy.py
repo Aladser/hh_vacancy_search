@@ -101,8 +101,7 @@ def test_work(job_params):
     # разные валюты
     job_params['salary_currency'] = 'USD'
     vacancy_2 = Vacancy(**job_params)
-    with pytest.raises(ValueError, match='зарплаты вакансий в разных валютах'):
-        Vacancy.is_better_salary(vacancy_1, vacancy_2)
+    assert not Vacancy.is_better_salary(vacancy_1, vacancy_2)
 
     # зарплата ПОСЛЕ программист 1 > программист 2
     job_params['salary_currency'] = 'руб'
@@ -125,5 +124,4 @@ def test_work(job_params):
     # нет зарплат для сравнения
     job_params['salary_to'] = None
     vacancy_1 = Vacancy(**job_params)
-    with pytest.raises(ValueError, match='Нет данных для корректного сравнения зарплат'):
-        Vacancy.is_better_salary(vacancy_1, vacancy_2)
+    assert not Vacancy.is_better_salary(vacancy_1, vacancy_2)

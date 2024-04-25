@@ -100,7 +100,12 @@ class Vacancy(LogMixin):
     @staticmethod
     def is_better_salary(vacancy_1, vacancy_2):
         if vacancy_1.salary_currency != vacancy_2.salary_currency:
-            raise ValueError('зарплаты вакансий в разных валютах')
+            try:
+                raise ValueError
+            except ValueError:
+                print('Зарплаты вакансий в разных валютах')
+            finally:
+                return False
 
         vcn1_salary_from = vacancy_1.salary_numeric_value_from
         vcn2_salary_from = vacancy_2.salary_numeric_value_from
@@ -111,7 +116,12 @@ class Vacancy(LogMixin):
         elif vcn1_salary_to and vcn2_salary_to:
             return vacancy_1 if vcn1_salary_to > vcn2_salary_to else vacancy_2
         else:
-            raise ValueError('Нет данных для корректного сравнения зарплат')
+            try:
+                raise ValueError
+            except ValueError:
+                print('Нет данных для корректного сравнения зарплат')
+            finally:
+                return False
 
     def __str__(self):
         return (f""
