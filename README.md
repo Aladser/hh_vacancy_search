@@ -12,7 +12,7 @@
   + **api**
       * ``BasicApi`` абстрактный класс api. Требует реализацию загрузки вакансий из ресурса.
         + ``api.load_vacancies()``
-      * ``HHApi``
+      * ``HHApi``- класс получения вакансий из сайта api.hh.ru
   + **connector**
       * ``BasicVacancyConnector`` абстрактный класс коннектора.
         - ``connector.add_vacancy()`` - добавляет вакансию в JSON-файл
